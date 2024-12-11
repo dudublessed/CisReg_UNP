@@ -1,9 +1,15 @@
 using CisReg_Website.Domain;
 using CisReg_Website.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDistributedMemoryCache(); 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.Cookie.HttpOnly = true; 
+    options.Cookie.IsEssential = true; 
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddAntiforgery(options =>
@@ -13,6 +19,8 @@ builder.Services.AddAntiforgery(options =>
 
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<ProfessionalRepository>();
+builder.Services.AddScoped<PatientRepository>();
+builder.Services.AddScoped<VacancyRepository>();
 
 var app = builder.Build();
 
@@ -27,6 +35,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.Use(async (context, next) =>
 {

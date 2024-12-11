@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace CisReg_Website.Controllers
+namespace CisReg_Website.Data
 {
-    public class UserAdminController : Controller
+    public class MongoDbContext : Controller
     {
         public IActionResult Index()
         {

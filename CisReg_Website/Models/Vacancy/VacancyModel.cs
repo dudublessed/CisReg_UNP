@@ -2,19 +2,22 @@ using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace CisReg_Website.Models;
+namespace CisReg_Website.Models.Vacancy ;
 
 public enum Status
 {
-  Available,
-  Occupied,
-  Canceled,
-  Rescheduled
+    Available,
+    Occupied,
+    Canceled,
+    Rescheduled,
+    Vazio,
+        Awaiting_validation
 }
 public class VacancyModel
 {
-  [BsonId]
-  public ObjectId Id { get; set; }
+    [BsonId]
+    public ObjectId Id { get; set; }
+
 
   [BsonElement("available_hour")]
   [DisplayName("Horário disponível")]
@@ -40,4 +43,5 @@ public class VacancyModel
   [DisplayName("Status")]
   [BsonRepresentation(BsonType.String)]
   public Status Status { get; set; }
+
 }

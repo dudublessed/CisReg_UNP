@@ -31,11 +31,12 @@ namespace CisReg_Website.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ErrorMessage = "Erro no envio...";
-                return View();
+                return View("Index");
             }
+#pragma warning disable CS0168 
             try
             {
-                var professionalTable = await _context.Professional
+                var professionalTable = await _context.Professionals
                      .FirstOrDefaultAsync(m => m.Email == model.Email);
 
                 if (professionalTable == null)
@@ -62,9 +63,10 @@ namespace CisReg_Website.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "Erro inesperado. Tente novamente.";
-               
+
             }
-            return View();
+#pragma warning restore CS0168 
+            return View("Index");
         }
 
         [HttpGet]

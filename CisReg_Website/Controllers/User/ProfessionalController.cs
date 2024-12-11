@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CisReg_Website.Domain;
+using CisReg_Website.Models.ProfessionalModels;
 using CisReg_Website.Models;
 using MongoDB.Bson;
 using CisReg_Website.Repositories;
@@ -36,7 +37,7 @@ namespace CisReg_Website.Controllers.User
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Academic,Council,CouncilNumber,Specialty,Formation,Id,Email,Password,FirstName,LastName")] Professional professional)
+        public async Task<IActionResult> Create([Bind("Academic,Council,Specialty,Id,Email,Password,FirstName,LastName")] Professional professional)
         {
             if (ModelState.IsValid)
             {
@@ -114,6 +115,15 @@ namespace CisReg_Website.Controllers.User
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult SelectProfessional(SelectProfessionalQueryParams QueryParams)
+        {
+            var professionals = _professionalRepository.GetAllByQuery(QueryParams);
+            var specialties = _professionalRepository.GetAllSpecialties();
+            SelectProfessionalViewModel viewModel = new(professionals, specialties, QueryParams);
+
+            return View(viewModel);
         }
 
         private bool ProfessionalExists(ObjectId id)
